@@ -1,5 +1,12 @@
 {
-    "bylekto":{
-        "wynik": 14
-    }
+    "wyniki":[
+        {
+            "wynik": 14,
+            "nazwa": "graczjakis"
+        },
+        {
+            "wynik": 36,
+            "nazwa": "graczjakis23"
+        }
+    ]
 }
