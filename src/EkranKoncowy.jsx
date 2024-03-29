@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-const EkranKoncowy = ({ wynikGracza }) => {
+const EkranKoncowy = ({ wynikGracza, czasGry }) => {
+    czasGry = '11:09:87';
     function zapiszPostep(){
         const nazwaGracza = prompt('Wygrana, jakim imieniem chcesz się zapisać w tabeli wyników?');
         const feczuj = async () => {
@@ -22,10 +23,13 @@ const EkranKoncowy = ({ wynikGracza }) => {
         const {} = useQuery({ queryKey: ['wynikiGraczy'], queryFn: feczuj});
     }
     return (  
-        <div>
-            Koniec zdobyłeś
-            <div onClick={() => zapiszPostep()}>
-                Czy chciałbys zapisać postęp?
+        <div className="flex justify-center mt-44 h-72 opacity-80 space-x-5">
+            <div className="bg-cyan-800 w-64 rounded-3xl space-y-12 text-xl ">
+                <p className="transition ease-in-out delay-100 text-cyan-400 text-center hover:text-cyan-100 duration-300 hover:bg-emerald-500 rounded-2xl cursor-pointer">Koniec, gra ci zajeła:</p>
+                <p className="text-center text-white">{czasGry}</p>
+                <p onClick={() => zapiszPostep()} className="transition ease-in-out delay-100 text-cyan-400 text-center hover:text-cyan-100 duration-300 hover:bg-emerald-500 rounded-2xl cursor-pointer">
+                    Czy chciałbys zapisać postęp?
+                </p>
             </div>
         </div>
     );
