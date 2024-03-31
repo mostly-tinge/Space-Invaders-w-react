@@ -10,7 +10,7 @@ export default function PociskiKosmitów({pociskiKosmitow}){
     return(
     <>
         {stylPociskow.map((styl, index) => 
-            <div className={`h-24 w-3 bg-orange-800 absolute ${pociskiKosmitow[index]} ${styl}`} key={kluczePociskow[index]}></div>
+            <div className={`h-24 w-2 bg-orange-800 absolute ${pociskiKosmitow[index]} ${styl}`} key={kluczePociskow[index]}></div>
         )}
     </> 
     );
