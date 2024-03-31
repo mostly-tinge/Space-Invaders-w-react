@@ -12,7 +12,7 @@ function PociskiStatku({polozeniePocisku}){
     return (
         <>
             {stylPociskow.map((pocisk, index) => 
-                <div className={`h-24 w-3 bg-slate-700 absolute ${pocisk} ${polozeniePocisku[index]}`} key={kluczePociskow[index]}></div>
+                <div className={`h-24 w-2 bg-slate-700 absolute ${pocisk} ${polozeniePocisku[index]}`} key={kluczePociskow[index]}></div>
             )}
        </> 
      );
