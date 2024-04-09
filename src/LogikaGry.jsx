@@ -13,24 +13,24 @@ export default function CalaLogika() {
     const stanBlokad = useRef(['opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100']);
     const kierunekKosmitow = useRef(1);
     const ktoryRuchStatku = useRef(0);
+    const stanGry = useRef({czyDobieglaKonca: false, nazwaGracza: null});
     const ktoryPociskMaBycWystrzelony = useRef(0);
     const czyJestJuzTimeout = useRef(false);
     const czyStatekMozeStrzelic = useRef(true);
     const hpStatku = useRef(5);
     const ufoludy = useRef([
         {
-            klucz: 'bueiowvuwi', tablicaZufo: [{ufo: 1, klucz: 'pier'}, {ufo: 2, klucz: 'drug'},
-            {ufo: 3, klucz: 'trze'}, {ufo: 4, klucz: 'piąt'}]
+            klucz: 'bueiowvuwi', tablicaZufo: [{klucz: 'pier'}, 
+        {klucz: 'drug'},{klucz: 'trze'}, {klucz: 'piąt'}]
         },
         {
-            klucz: 'bueiuwi', tablicaZufo: [{ufo: 5, klucz: 'piąt'}, {ufo: 6, klucz: 'szós'},
-            {ufo: 7, klucz: 'siód'}, {ufo: 8, klucz: 'osmo'}]
+            klucz: 'bueiuwi', tablicaZufo: [{klucz: 'piąt'}, {klucz: 'szós'},
+        { klucz: 'siód'}, {klucz: 'osmo'}]
         },
         {
-            klucz: 'bueiowvu', tablicaZufo: [{ ufo: 9, klucz: 'dziew'}, {ufo: 10, klucz: 'dzies'},
-            {ufo: 11, klucz: 'jede'}, {ufo: 12, klucz: 'siódviaq'}]
+            klucz: 'bueiowvu', tablicaZufo: [{klucz: 'dziew'}, {klucz: 'dzies'},
+        {klucz: 'jede'}, {klucz: 'siódviaq'}]
         }]);
-    let koniecGry = false;
 
     const [marginesStatku, zmienMarginesStatku] = useState('0');
     const [polozenieKosmitow, zmienPolozenieKosmitow] = useState('justify-items-center');
@@ -42,7 +42,7 @@ export default function CalaLogika() {
         const ufoludy3Rzedu = ufoludy.current[2].tablicaZufo;
         const ruchKosmitow = ['justify-items-start', 'justify-items-center', 'justify-items-end', 'justify-items-center'];
         const Ichruch = setInterval(() => {
-            //kierunekKosmitow.current += 1;
+            kierunekKosmitow.current += 1;
             if(kierunekKosmitow.current === 4){
                 kierunekKosmitow.current = 0;
             }
@@ -52,12 +52,11 @@ export default function CalaLogika() {
             }
         }, 4000)
     }
-    function ustawPrzezroczystoscBlokady(numerPocisku){
+    function ustawPrzezroczystoscBlokady(numerPocisku, ktoreUfoludy){
         const poziomyPrzezroczystosci = ['opacity-75', 'opacity-50', 'opacity-25', 'opacity-0'];
         const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
         const numerBlokady = ktoraBlokada[numerPocisku];
-        console.log(ktoryPoziomPrzezroczystosci.current[numerBlokady]);
-        if(ktoryPoziomPrzezroczystosci.current[numerBlokady] === 4) return;
+        if(ktoryPoziomPrzezroczystosci.current[numerBlokady] === 4 || !ufoludy.current[ktoreUfoludy]) return;
         stanBlokad.current[numerBlokady] = poziomyPrzezroczystosci[ktoryPoziomPrzezroczystosci.current[numerBlokady]];
         ktoryPoziomPrzezroczystosci.current[numerBlokady]++;
     }
@@ -131,6 +130,11 @@ export default function CalaLogika() {
         const los2rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][1].length);
         const los3rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][2].length);
         const czyPociskTrafil = () => {
+            const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
+            console.log(stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]])
+            if(stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== undefined) return;
+            console.log(ktoryPociskMaBycWystrzelony.current);
+            console.log(pociski1Rzedu[los1rzedu]);
             if(ktoryPociskMaBycWystrzelony.current === pociski1Rzedu[los1rzedu] && ufoludy1Rzedu.length !== 0){
                 hpStatku.current -= 1;
             }
@@ -160,9 +164,9 @@ export default function CalaLogika() {
                 zmienPolozeniePociskuKosmitow('mb-56 bottom-12 visible');
                 setTimeout(() => {
                     czyPociskTrafil();
-                    //ustawPrzezroczystoscBlokady(pociski1Rzedu[los1rzedu]);
-                    //ustawPrzezroczystoscBlokady(pociski2Rzedu[los2rzedu]);
-                    //ustawPrzezroczystoscBlokady(pociski3Rzedu[los3rzedu]);
+                    ustawPrzezroczystoscBlokady(pociski1Rzedu[los1rzedu], 0);
+                    ustawPrzezroczystoscBlokady(pociski2Rzedu[los2rzedu], 1);
+                    ustawPrzezroczystoscBlokady(pociski3Rzedu[los3rzedu], 2);
                     zmienPolozeniePociskuKosmitow(' bottom-4 visible ');
                     setTimeout(() => {
                         zmienPolozeniePociskuKosmitow(' invisible ');
@@ -174,7 +178,7 @@ export default function CalaLogika() {
 
     useEffect(() => {
         function kiedySieKliknie() {
-            if(czyStatekMozeStrzelic.current === false) return
+            if(!czyStatekMozeStrzelic.current) return
             let ktoryRzadMaBycOstrzelany;
             const wlasciwyPocisk = JSON.parse(JSON.stringify(ktoryPociskMaBycWystrzelony.current));
             const wlasciwyKierunek = JSON.parse(JSON.stringify(kierunekKosmitow.current));
@@ -189,11 +193,11 @@ export default function CalaLogika() {
                 setTimeout(() => {
                     zmianaStanuPocisku(' mt-64 invisible ');
                     czyStatekMozeStrzelic.current = true;
-                }, 550)
+                }, 650)
                 ufoludy.current[ktoryRzadMaBycOstrzelany].tablicaZufo.pop();
                 if(ufoludy.current[0].tablicaZufo.length === 0 && ufoludy.current[1].tablicaZufo.length === 0 && ufoludy.current[2].tablicaZufo.length === 0){
-                    koniecGry = true;
-                    const wygrana = prompt('wygrałeś, podaj swoją nazwę: ');
+                    stanGry.current.czyDobieglaKonca = true;
+                    stanGry.current.nazwaGracza = prompt('wygrałeś, podaj swoją nazwę: ');
                 }
             }
             function pierwszyTimeout() {
@@ -201,7 +205,7 @@ export default function CalaLogika() {
                     ustawPrzezroczystoscBlokady(ktoryPociskMaBycWystrzelony.current);
                     zmianaStanuPocisku(' visible ');
                     drugiTimeout();
-                }, 450)
+                }, 650)
             }
             function wystrzelPocisk(Rzad, wlasciwyKierunek){
                 if(wlasciwyKierunek !== kierunekKosmitow.current || ufoludy.current[Rzad].tablicaZufo.length === 0) return;
@@ -266,7 +270,7 @@ export default function CalaLogika() {
 
     window.addEventListener('keydown', ruszanieSieStatku);
     window.addEventListener('load', ruszanieSieKosmitow);
-    if(koniecGry) return <EkranKoncowy/>
+    if(!!stanGry.current.czyDobieglaKonca) return <EkranKoncowy nazwaGracza={stanGry.current.nazwaGracza} czasGry={"00:23:05"}/>;
     return (
         <>
             <div className={`grid gap-10 grid-cols-3 h-72 ${polozenieKosmitow}`}>
