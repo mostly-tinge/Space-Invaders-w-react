@@ -13,7 +13,7 @@ export default function EkranStartowy(){
             let napis = [];
             console.log(czyMaIscOdKonca);
             ktoryNapis.current += 1;
-            if(ktoryNapis.current === 24){
+            if(ktoryNapis.current === 25){
                 czyMaIscOdKonca = true;
             } 
             if(czyMaIscOdKonca){
