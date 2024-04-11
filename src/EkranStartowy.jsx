@@ -7,12 +7,20 @@ export default function EkranStartowy(){
     const [czyOpcjaJestZaladowana, zaladujOpcje] = useState(false);
     const ktoryNapis = useRef(-1);
     function animacjaNapisu(){
+        let czyMaIscOdKonca = false;
         setInterval(() => {
             const litery = ['S', 'p', 'a', 'c', 'e', ' ', 'i', 'n', 'v', 'i', 'd', 'e', 'r', 's', ' ', 'w', ' ', 'r', 'e', 'a', 'c', 't', 'i', 'e'];
             let napis = [];
+            console.log(czyMaIscOdKonca);
             ktoryNapis.current += 1;
-            if(ktoryNapis.current === litery.length + 1){
-                ktoryNapis.current = 0;
+            if(ktoryNapis.current === 24){
+                czyMaIscOdKonca = true;
+            } 
+            if(czyMaIscOdKonca){
+                ktoryNapis.current -= 2;
+            }
+            if(ktoryNapis.current === 1){
+                czyMaIscOdKonca = false;
             }
             for(let i = 0; i < ktoryNapis.current; i++){
                 napis.push(litery[i]);
