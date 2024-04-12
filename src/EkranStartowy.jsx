@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 export default function EkranStartowy(){
-    const [napis, zmienNapis] = useState();
+    const [napis, zmienNapis] = useState([]);
     const [czyOProjekcieJestZaladowane, zaladujOProjekcie] = useState(false);
     const [czyPoziomJestZaladowana, zaladujPoziomy] = useState(false);
     const [czyOpcjaJestZaladowana, zaladujOpcje] = useState(false);
@@ -9,9 +9,9 @@ export default function EkranStartowy(){
     function animacjaNapisu(){
         let czyMaIscOdKonca = false;
         setInterval(() => {
+            console.log('lal');
             const litery = ['S', 'p', 'a', 'c', 'e', ' ', 'i', 'n', 'v', 'i', 'd', 'e', 'r', 's', ' ', 'w', ' ', 'r', 'e', 'a', 'c', 't', 'i', 'e'];
-            let napis = [];
-            console.log(czyMaIscOdKonca);
+            let napisBuforowa = [];
             ktoryNapis.current += 1;
             if(ktoryNapis.current === 25){
                 czyMaIscOdKonca = true;
@@ -23,11 +23,9 @@ export default function EkranStartowy(){
                 czyMaIscOdKonca = false;
             }
             for(let i = 0; i < ktoryNapis.current; i++){
-                napis.push(litery[i]);
+                napisBuforowa.push(litery[i]);
             }
-            console.log(ktoryNapis)
-            console.log(litery[ktoryNapis.current]);
-            zmienNapis(napis.join(''));
+            zmienNapis(napisBuforowa.join(''));
         }, 800)
     }
     function zaladujOpcjeZamknijPoziomy(){
@@ -48,7 +46,7 @@ export default function EkranStartowy(){
     window.addEventListener('load', animacjaNapisu);
     return (
         <>
-        <div className="text-white text-center mt-16 text-3xl">{napis}</div>
+        <div className="text-white text-center mt-16 text-3xl">{(napis.length > 0) ? napis : <div className="opacity-0">P</div>}</div>
         <div className="flex justify-center h-56 space-x-5 mt-44 opacity-80 ">
             <div className="w-56 space-y-16 text-xl bg-cyan-800 rounded-3xl">
                 <Link to={`/gra`}><div onClick={() => zamknijOba()} className="text-center transition duration-300 ease-in-out delay-100 cursor-pointer  text-cyan-400 hover:text-cyan-100 hover:bg-emerald-500 rounded-2xl" >Start</div></Link>
