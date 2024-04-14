@@ -5,10 +5,9 @@ import Kosmici from "./Kosmici";
 import PociskiKosmitów from "./PociskiKosmitów";
 import Blokady from "./Blokady";
 import EkranKoncowy from "./EkranKoncowy";
-export default function CalaLogika() {
+export default function CalaLogika({ ufoludy }) {
     const ruchStatku = ['flex flex-row', 'grid justify-center', 'flex flex-row-reverse'];
 
-    //const czyKosmiciMogaStrzelic = useRef(false);
     const ktoryPoziomPrzezroczystosci = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
     const stanBlokad = useRef(['opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100', 'opacity-100']);
     const kierunekKosmitow = useRef(1);
@@ -18,19 +17,6 @@ export default function CalaLogika() {
     const czyJestJuzTimeout = useRef(false);
     const czyStatekMozeStrzelic = useRef(true);
     const hpStatku = useRef(5);
-    const ufoludy = useRef([
-        {
-            klucz: 'bueiowvuwi', tablicaZufo: [{klucz: 'pier'}, 
-        {klucz: 'drug'},{klucz: 'trze'}, {klucz: 'piąt'}]
-        },
-        {
-            klucz: 'bueiuwi', tablicaZufo: [{klucz: 'piąt'}, {klucz: 'szós'},
-        { klucz: 'siód'}, {klucz: 'osmo'}]
-        },
-        {
-            klucz: 'bueiowvu', tablicaZufo: [{klucz: 'dziew'}, {klucz: 'dzies'},
-        {klucz: 'jede'}, {klucz: 'siódviaq'}]
-        }]);
 
     const [marginesStatku, zmienMarginesStatku] = useState('0');
     const [polozenieKosmitow, zmienPolozenieKosmitow] = useState('justify-items-center');
@@ -131,10 +117,7 @@ export default function CalaLogika() {
         const los3rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][2].length);
         const czyPociskTrafil = () => {
             const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
-            console.log(stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]])
             if(stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== undefined) return;
-            console.log(ktoryPociskMaBycWystrzelony.current);
-            console.log(pociski1Rzedu[los1rzedu]);
             if(ktoryPociskMaBycWystrzelony.current === pociski1Rzedu[los1rzedu] && ufoludy1Rzedu.length !== 0){
                 hpStatku.current -= 1;
             }
@@ -254,7 +237,7 @@ export default function CalaLogika() {
                         break;
                     case 13:
                     case 14:
-                        wystrzelPocisk('1', wlasciwyPocisk);
+                        wystrzelPocisk('1', wlasciwyKierunek);
                         break;
                     case 19:
                     case 20:
