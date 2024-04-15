@@ -21,7 +21,7 @@ export default function CalaLogika({ ufoludy }) {
     const [marginesStatku, zmienMarginesStatku] = useState('0');
     const [polozenieKosmitow, zmienPolozenieKosmitow] = useState('justify-items-center');
     const [polozeniePocisku, zmienPolozeniePocisku] = useState(Array(22).fill(' mt-64 invisible '));
-    const [pociskiKosmitow, zmienPociskiKosmitow] = useState(Array(22).fill(' mb-56 bottom-24 mt-64 invisible '));
+    const [pociskiKosmitow, zmienPociskiKosmitow] = useState(Array(22).fill(' mb-56 bottom-24 mt-64 visible '));
     const ruszanieSieKosmitow = () => {
         const ufoludy1Rzedu = ufoludy.current[0].tablicaZufo;
         const ufoludy2Rzedu = ufoludy.current[1].tablicaZufo;
@@ -40,8 +40,9 @@ export default function CalaLogika({ ufoludy }) {
     }
     function ustawPrzezroczystoscBlokady(numerPocisku, ktoreUfoludy){
         const poziomyPrzezroczystosci = ['opacity-75', 'opacity-50', 'opacity-25', 'opacity-0'];
-        const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
+        const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, null, 4, 5, null, 6, 7, 7, null, null, null];
         const numerBlokady = ktoraBlokada[numerPocisku];
+        console.log(numerBlokady);
         if(ktoryPoziomPrzezroczystosci.current[numerBlokady] === 4 || !ufoludy.current[ktoreUfoludy]) return;
         stanBlokad.current[numerBlokady] = poziomyPrzezroczystosci[ktoryPoziomPrzezroczystosci.current[numerBlokady]];
         ktoryPoziomPrzezroczystosci.current[numerBlokady]++;
