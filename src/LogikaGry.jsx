@@ -118,7 +118,7 @@ export default function CalaLogika({ ufoludy }) {
         const los3rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][2].length);
         const czyPociskTrafil = () => {
             const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
-            if(stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== undefined) return;
+            if(stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[ktoryPociskMaBycWystrzelony.current]] !== undefined) return 'Nie przeszło';
             if(ktoryPociskMaBycWystrzelony.current === pociski1Rzedu[los1rzedu] && ufoludy1Rzedu.length !== 0){
                 hpStatku.current -= 1;
             }
@@ -147,7 +147,7 @@ export default function CalaLogika({ ufoludy }) {
             setTimeout(() => {
                 zmienPolozeniePociskuKosmitow('mb-56 bottom-12 visible');
                 setTimeout(() => {
-                    czyPociskTrafil();
+                    if(czyPociskTrafil() === 'Nie przeszło') return zmienPolozeniePociskuKosmitow(' invisible ');
                     ustawPrzezroczystoscBlokady(pociski1Rzedu[los1rzedu], 0);
                     ustawPrzezroczystoscBlokady(pociski2Rzedu[los2rzedu], 1);
                     ustawPrzezroczystoscBlokady(pociski3Rzedu[los3rzedu], 2);
