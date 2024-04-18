@@ -23,18 +23,19 @@ export default function CalaLogika({ ufoludy }) {
     const [polozeniePocisku, zmienPolozeniePocisku] = useState(Array(22).fill(' mt-64 invisible '));
     const [pociskiKosmitow, zmienPociskiKosmitow] = useState(Array(22).fill(' mb-56 bottom-24 mt-64 invisible '));
     const ruszanieSieKosmitow = (czyAnulowac) => {
+        if(czyAnulowac) return;
         const ufoludy1Rzedu = ufoludy.current[0].tablicaZufo;
         const ufoludy2Rzedu = ufoludy.current[1].tablicaZufo;
         const ufoludy3Rzedu = ufoludy.current[2].tablicaZufo;
         const ruchKosmitow = ['justify-items-start', 'justify-items-center', 'justify-items-end', 'justify-items-center'];
         const Ichruch = setInterval(() => {
             console.log('jaja');
-            //kierunekKosmitow.current += 1;
+            kierunekKosmitow.current += 1;
             if(kierunekKosmitow.current === 4){
                 kierunekKosmitow.current = 0;
             }
             zmienPolozenieKosmitow(ruchKosmitow[kierunekKosmitow.current]);
-            if((ufoludy1Rzedu.length === 0 && ufoludy2Rzedu.length === 0 && ufoludy3Rzedu.length === 0) || czyAnulowac){
+            if((ufoludy1Rzedu.length === 0 && ufoludy2Rzedu.length === 0 && ufoludy3Rzedu.length === 0)){
                 clearInterval(Ichruch);
             }
         }, 4000)
@@ -119,17 +120,12 @@ export default function CalaLogika({ ufoludy }) {
         const los2rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][1].length);
         const los3rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][2].length);
         const czyPociskTrafil = (numerPocisku, ktoreUfoludy) => {
+            const rzadUfolodow = ufoludy.current[ktoreUfoludy].tablicaZufo;
             console.log(ktoryPociskMaBycWystrzelony.current);
             const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
             console.log(stanBlokad.current[ktoraBlokada[numerPocisku]]);
-            if(stanBlokad.current[ktoraBlokada[numerPocisku]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[numerPocisku]] !== undefined) return 'Nie przeszło';
-            if(ktoryPociskMaBycWystrzelony.current === pociski1Rzedu[los1rzedu] && ufoludy1Rzedu.length !== 0){
-                hpStatku.current -= 1;
-            }
-            else if(ktoryPociskMaBycWystrzelony.current === pociski2Rzedu[los2rzedu] && ufoludy2Rzedu.length !== 0){
-                hpStatku.current -= 1;
-            }
-            else if(ktoryPociskMaBycWystrzelony.current === pociski3Rzedu[los3rzedu] && ufoludy3Rzedu.length !== 0){
+            if(stanBlokad.current[ktoraBlokada[numerPocisku]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[numerPocisku]] !== undefined) return zmienPolozeniePociskuKosmitow(' invisible ');
+            if(ktoryPociskMaBycWystrzelony.current === numerPocisku && rzadUfolodow.length !== 0){
                 hpStatku.current -= 1;
             }
             if(hpStatku.current === 0){
@@ -150,6 +146,9 @@ export default function CalaLogika({ ufoludy }) {
             ustawPrzezroczystoscBlokady(pociski1Rzedu[los1rzedu], 0);
             ustawPrzezroczystoscBlokady(pociski2Rzedu[los2rzedu], 1);
             ustawPrzezroczystoscBlokady(pociski3Rzedu[los3rzedu], 2);
+            czyPociskTrafil(pociski1Rzedu[los1rzedu], 0);
+            czyPociskTrafil(pociski1Rzedu[los2rzedu], 1);
+            czyPociskTrafil(pociski1Rzedu[los3rzedu], 2);
         }
         function pierwszyTimeout(){
             setTimeout(() => zmienPolozeniePociskuKosmitow('mb-56 bottom-24 visible'), 600);
@@ -178,7 +177,7 @@ export default function CalaLogika({ ufoludy }) {
     }, [kierunekKosmitow.current])
 
     useEffect(() => {
-        //ruszanieSieKosmitow();
+        ruszanieSieKosmitow();
         function kiedySieKliknie() {
             if(!czyStatekMozeStrzelic.current) return
             let ktoryRzadMaBycOstrzelany;
@@ -267,7 +266,7 @@ export default function CalaLogika({ ufoludy }) {
             }
         }
         window.addEventListener('click', kiedySieKliknie);
-        return () => {window.removeEventListener('click', kiedySieKliknie); ruszanieSieKosmitow(true)}
+        return () => {window.removeEventListener('click', kiedySieKliknie); setTimeout(ruszanieSieKosmitow(true), 1000)}
     }, [])
 
     window.addEventListener('keydown', ruszanieSieStatku);
