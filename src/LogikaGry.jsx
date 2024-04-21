@@ -30,7 +30,7 @@ export default function CalaLogika({ ufoludy }) {
         const ruchKosmitow = ['justify-items-start', 'justify-items-center', 'justify-items-end', 'justify-items-center'];
         const Ichruch = setInterval(() => {
             console.log('jaja');
-            kierunekKosmitow.current += 1;
+            //kierunekKosmitow.current += 1;
             if(kierunekKosmitow.current === 4){
                 kierunekKosmitow.current = 0;
             }
@@ -104,9 +104,9 @@ export default function CalaLogika({ ufoludy }) {
     }
     useEffect(() => {
         //ruszanieSieKosmitow()
-        const ufoludy1Rzedu = ufoludy.current[0].tablicaZufo;
+        /*const ufoludy1Rzedu = ufoludy.current[0].tablicaZufo;
         const ufoludy2Rzedu = ufoludy.current[1].tablicaZufo;
-        const ufoludy3Rzedu = ufoludy.current[2].tablicaZufo;
+        const ufoludy3Rzedu = ufoludy.current[2].tablicaZufo;*/
         let kopiaKierunkuKosmitow = kierunekKosmitow.current;
         if(kopiaKierunkuKosmitow === 3){
             kopiaKierunkuKosmitow = 1;
@@ -121,10 +121,11 @@ export default function CalaLogika({ ufoludy }) {
         const los3rzedu = Math.floor(Math.random() * pociskiDoLosowania[kopiaKierunkuKosmitow][2].length);
         const czyPociskTrafil = (numerPocisku, ktoreUfoludy) => {
             const rzadUfolodow = ufoludy.current[ktoreUfoludy].tablicaZufo;
-            console.log(ktoryPociskMaBycWystrzelony.current);
-            const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, 4, 4, 5, null, 6, 6, 7];
+            console.log(numerPocisku);
+            const ktoraBlokada = [null, null, null, 0, 0, 1, 1, null, null, 2, 3, null, null, 4, 5, null, 6, 6, 7, null, null, null];
             console.log(stanBlokad.current[ktoraBlokada[numerPocisku]]);
-            if(stanBlokad.current[ktoraBlokada[numerPocisku]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[numerPocisku]] !== undefined) return zmienPolozeniePociskuKosmitow(' invisible ');
+            if(stanBlokad.current[ktoraBlokada[numerPocisku]] === undefined || stanBlokad.current[ktoraBlokada[numerPocisku]] === 'opacity-0') return trzeciTimeout(numerPocisku, ktoreUfoludy);
+            if(stanBlokad.current[ktoraBlokada[numerPocisku]] !== 'opacity-0' || stanBlokad.current[ktoraBlokada[numerPocisku]] !== undefined) return 
             if(ktoryPociskMaBycWystrzelony.current === numerPocisku && rzadUfolodow.length !== 0){
                 hpStatku.current -= 1;
             }
@@ -134,30 +135,48 @@ export default function CalaLogika({ ufoludy }) {
                 //ruszanieSieKosmitow(true);
             }
         }
-        const zmienPolozeniePociskuKosmitow = doZmiany => {
+        const zmienPolozenieWszystkichPociskowKosmitow = doZmiany => {
             zmienPociskiKosmitow(pociskiKosmitow.map((arg, index) => {
-                if(pociski1Rzedu[los1rzedu] === index && !!ufoludy.current[0] && ufoludy1Rzedu.length !== 0) return arg = doZmiany;
-                if(pociski2Rzedu[los2rzedu] === index && !!ufoludy.current[1] && ufoludy2Rzedu.length !== 0) return arg = doZmiany;
-                if(pociski3Rzedu[los3rzedu] === index && !!ufoludy.current[2] && ufoludy3Rzedu.length !== 0) return arg = doZmiany;
+                if(pociski1Rzedu[los1rzedu] === index && !!ufoludy.current[0] && ufoludy.current[0].tablicaZufo.length !== 0) return arg = doZmiany;
+                if(pociski2Rzedu[los2rzedu] === index && !!ufoludy.current[1] && ufoludy.current[1].tablicaZufo.length !== 0) return arg = doZmiany;
+                if(pociski3Rzedu[los3rzedu] === index && !!ufoludy.current[2] && ufoludy.current[2].tablicaZufo.length !== 0) return arg = doZmiany;
                 return arg;
             }));
         }
+        const zmienPolozeniePociskuKosmitow = (doZmiany, numerPocisku, numerUfoludow) => {
+            console.log(doZmiany);
+            zmienPociskiKosmitow(pociskiKosmitow.map((arg, index) => {
+                if(numerPocisku === index && !!ufoludy.current[numerUfoludow] && ufoludy.current[numerUfoludow].tablicaZufo.length !== 0) return arg = doZmiany;
+                return arg;
+            }));
+        }
+        function trzeciTimeout(numerPocisku, ktoreUfo){
+            console.log('Wykonano');
+            setTimeout(() => zmienPolozeniePociskuKosmitow(' bottom-4 visible ', numerPocisku, ktoreUfo), 300);
+            setTimeout(() => zmienPolozeniePociskuKosmitow(' invisible ', numerPocisku, ktoreUfo), 600);
+        }
         function drugiTimeout(){
-            ustawPrzezroczystoscBlokady(pociski1Rzedu[los1rzedu], 0);
-            ustawPrzezroczystoscBlokady(pociski2Rzedu[los2rzedu], 1);
-            ustawPrzezroczystoscBlokady(pociski3Rzedu[los3rzedu], 2);
-            czyPociskTrafil(pociski1Rzedu[los1rzedu], 0);
-            czyPociskTrafil(pociski1Rzedu[los2rzedu], 1);
-            czyPociskTrafil(pociski1Rzedu[los3rzedu], 2);
+            console.log(pociski1Rzedu[los1rzedu] + ' pierwszy');
+            console.log(pociski2Rzedu[los2rzedu] + ' drugi');
+            console.log(pociski3Rzedu[los3rzedu] + ' trzeci');
+            setTimeout(() => {
+                ustawPrzezroczystoscBlokady(pociski1Rzedu[los1rzedu], 0);
+                ustawPrzezroczystoscBlokady(pociski2Rzedu[los2rzedu], 1);
+                //ustawPrzezroczystoscBlokady(pociski3Rzedu[los3rzedu], 2);
+                czyPociskTrafil(pociski1Rzedu[los1rzedu], 0);
+                czyPociskTrafil(pociski2Rzedu[los2rzedu], 1);
+                //czyPociskTrafil(pociski3Rzedu[los3rzedu], 2);
+            }, 600);
         }
         function pierwszyTimeout(){
-            setTimeout(() => zmienPolozeniePociskuKosmitow('mb-56 bottom-24 visible'), 600);
+            setTimeout(() => zmienPolozenieWszystkichPociskowKosmitow('mb-56 bottom-24 visible'), 600);
             setTimeout(() => {
-                zmienPolozeniePociskuKosmitow('mb-56 bottom-12 visible');
+                zmienPolozenieWszystkichPociskowKosmitow('mb-56 bottom-12 visible');
                 drugiTimeout();
             }, 1200);
         }
-        setTimeout(() => {
+        pierwszyTimeout();
+        /*setTimeout(() => {
             zmienPolozeniePociskuKosmitow('mb-56 bottom-24 visible');
             setTimeout(() => {
                 zmienPolozeniePociskuKosmitow('mb-56 bottom-12 visible');
@@ -172,7 +191,7 @@ export default function CalaLogika({ ufoludy }) {
                     }, 300);
                 }, 600);
             }, 600);
-        }, 600);
+        }, 600);*/
         //return () => ruszanieSieKosmitow(true);
     }, [kierunekKosmitow.current])
 
